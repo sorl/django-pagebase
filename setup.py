@@ -30,7 +30,7 @@ setup(
         'Framework :: Django',
     ],
     packages=[
-        'basepage',
+        'pagebase',
     ],
     platforms='any',
     # we don't want eggs
