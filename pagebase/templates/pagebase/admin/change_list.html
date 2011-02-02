@@ -1,8 +1,17 @@
 {% extends "admin/base_site.html" %}
-{% load adminmedia admin_list i18n pagebase %}
+{% load adminmedia pagebase_admin_list i18n %}
 {% load url from future %}
 {% block extrastyle %}
   {{ block.super }}
+  <style>
+    span.indent-1 {padding-left:20px}
+    span.indent-2 {padding-left:40px}
+    span.indent-3 {padding-left:60px}
+    span.indent-4 {padding-left:80px}
+    span.indent-5 {padding-left:100px}
+    span.indent-6 {padding-left:120px}
+    span.indent-7 {padding-left:140px}
+  </style>
   <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/changelists.css" />
   {% if cl.formset %}
     <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css" />
