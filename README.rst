@@ -1,2 +1,2 @@
-aino-basepage
-=============
+django-pagebase
+===============

@@ -1,5 +1,5 @@
 """
-These fields will only work with PostgreSQL
+Most of these fields will only work with PostgreSQL
 """
 import re
 import unicodedata
@@ -71,7 +71,7 @@ class CharArrayField(BaseArrayField):
         kwargs['max_length'] = kwargs.get('max_length', 200)
         super(CharArrayField, self).__init__(*args, **kwargs)
 
-    def db_type(self):
+    def db_type(self, connection):
         data = DictWrapper(self.__dict__, connection.ops.quote_name, "qn_")
         return 'character varying(%(max_length)s)[]' % data
 
@@ -80,7 +80,7 @@ class IntegerArrayField(BaseArrayField):
     """
     An integer array field for PostgreSQL
     """
-    def db_type(self):
+    def db_type(self, connection):
         return 'integer[]'
 
 
@@ -88,7 +88,7 @@ class BooleanArrayField(BaseArrayField):
     """
     A boolean array field for PostgreSQL
     """
-    def db_type(self):
+    def db_type(self, connection):
         return 'boolean[]'
 
 

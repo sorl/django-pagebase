@@ -13,13 +13,14 @@ fp.close()
 setup(
     name='pagebase',
     version='0.1',
+    url='https://github.com/aino/django-pagebase',
     license='BSD',
     author='Mikko Hellsing',
     author_email='mikko@aino.se',
     description='Pages for Django',
     long_description=long_description,
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 2 - Pre-Alpha',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
