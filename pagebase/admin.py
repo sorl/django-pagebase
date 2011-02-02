@@ -11,7 +11,7 @@ class PageChangeList(ChangeList):
 
 class PageBaseAdmin(admin.ModelAdmin):
     search_fields = ('title',)
-    list_display = ('title', 'url', 'position')
+    list_display = ('title', 'section', 'position', 'url')
     list_editable = ('position',)
     change_list_template = 'pagebase/admin/change_list.html'
 

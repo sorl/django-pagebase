@@ -4,7 +4,13 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
+SECTIONS = (
+    ('main', _('Main')),
+    ('eyebrow', _('Eyebrow')),
+)
+
 class PageBase(models.Model):
+    section = models.CharField(_('section'), choices=SECTIONS, max_length=10, blank=True)
     parent = models.ForeignKey('self', verbose_name=_(u'parent'), blank=True, null=True, related_name='children')
     title = models.CharField(_('title'), max_length=500)
     slug = AutoSlugField(max_length=510, blank=True)
@@ -32,7 +38,7 @@ class PageBase(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ('level', 'position', 'title',)
+        ordering = ('-section', 'position_array', 'title')
         verbose_name = _('page')
         verbose_name_plural = _('pages')
 
