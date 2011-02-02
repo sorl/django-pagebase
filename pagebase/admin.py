@@ -11,7 +11,8 @@ class PageChangeList(ChangeList):
 
 class PageBaseAdmin(admin.ModelAdmin):
     search_fields = ('title',)
-    list_display = ('title', 'url')
+    list_display = ('title', 'url', 'position')
+    list_editable = ('position',)
     change_list_template = 'pagebase/admin/change_list.html'
 
     def get_changelist(self, request, **kwargs):
