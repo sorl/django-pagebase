@@ -3,7 +3,6 @@ Most of these fields will only work with PostgreSQL
 """
 import re
 import unicodedata
-from django.db import connection
 from django.db import models
 from django.utils.datastructures import DictWrapper
 from django.utils.encoding import force_unicode
@@ -106,14 +105,19 @@ class AutoSlugField(SouthMixin, models.SlugField):
         value = self.value_from_object(obj)
         if not value:
             value = getattr(obj, self.populate_from)
+            if callable(value):
+                return value()
         slug = self.slugify(value)
         counter = 1
         _slug = slug
+        invalid = self.invalid
+        if callable(invalid):
+            invalid = invalid()
         while True:
             qs = obj.__class__._default_manager.filter(**{self.attname: _slug})
             if not add:
                 qs = qs.exclude(pk=obj.pk)
-            if _slug not in self.invalid and not qs:
+            if _slug not in invalid and not qs:
                 break
             _slug = '%s-%s' % (slug, counter)
             counter += 1

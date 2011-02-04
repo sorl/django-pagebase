@@ -1,7 +1,9 @@
 #coding=utf-8
-from pagebase.models.fields import IntegerArrayField, AutoSlugField
 from django.db import models
+from django.db.models.base import ModelBase
+from django.db.models.fields import Field
 from django.utils.translation import ugettext_lazy as _
+from pagebase.fields import IntegerArrayField, AutoSlugField
 
 
 SECTIONS = (
@@ -9,7 +11,29 @@ SECTIONS = (
     ('eyebrow', _('Eyebrow')),
 )
 
+
+class HideFieldsMeta(ModelBase):
+    def __new__(cls, name, bases, attrs):
+        cls._basepage_fields = {}
+        for k, v in attrs.items():
+            if isinstance(v, Field):
+                cls._basepage_fields[k] = attrs.pop(k)
+        return super(HideFieldsMeta, cls).__new__(cls, name, bases, attrs)
+
+
+class PageBaseMeta(HideFieldsMeta):
+    """
+    This is what implemnting classes need to use
+    """
+    def __new__(cls, name, bases, attrs):
+        for k, v in cls._basepage_fields.items():
+            if k not in attrs:
+                attrs[k] = cls._basepage_fields.pop(k)
+        return super(HideFieldsMeta, cls).__new__(cls, name, bases, attrs)
+
+
 class PageBase(models.Model):
+    __metaclass__ = HideFieldsMeta
     section = models.CharField(_('section'), choices=SECTIONS, max_length=10, blank=True)
     parent = models.ForeignKey('self', verbose_name=_(u'parent'), blank=True, null=True, related_name='children')
     title = models.CharField(_('title'), max_length=500)
