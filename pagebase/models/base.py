@@ -12,7 +12,7 @@ SECTIONS = (
 )
 
 
-class HideFieldsMeta(ModelBase):
+class PageBaseMeta(ModelBase):
     def __new__(cls, name, bases, attrs):
         cls.base_fields = {}
         for k, v in attrs.items():
@@ -21,7 +21,7 @@ class HideFieldsMeta(ModelBase):
         return ModelBase.__new__(cls, name, bases, attrs)
 
 
-class PageBaseMeta(HideFieldsMeta):
+class PageMeta(PageBaseMeta):
     """
     This is what implementing classes need to use
     """
@@ -33,7 +33,7 @@ class PageBaseMeta(HideFieldsMeta):
 
 
 class PageBase(models.Model):
-    __metaclass__ = HideFieldsMeta
+    __metaclass__ = PageBaseMeta
     section = models.CharField(_('section'), choices=SECTIONS, max_length=10, blank=True)
     parent = models.ForeignKey('self', verbose_name=_(u'parent'), blank=True, null=True, related_name='children')
     title = models.CharField(_('title'), max_length=500)
