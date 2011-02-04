@@ -23,7 +23,7 @@ class HideFieldsMeta(ModelBase):
 
 class PageBaseMeta(HideFieldsMeta):
     """
-    This is what implemnting classes need to use
+    This is what implementing classes need to use
     """
     def __new__(cls, name, bases, attrs):
         for k, v in cls._basepage_fields.items():
