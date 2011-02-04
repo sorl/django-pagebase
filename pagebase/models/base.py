@@ -13,8 +13,9 @@ SECTIONS = (
 
 
 class PageBaseMeta(ModelBase):
+    base_fields = {}
+
     def __new__(cls, name, bases, attrs):
-        cls.base_fields = {}
         for k, v in attrs.items():
             if isinstance(v, Field):
                 cls.base_fields[k] = attrs.pop(k)
