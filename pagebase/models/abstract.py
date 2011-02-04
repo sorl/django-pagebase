@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.base import ModelBase
 from django.db.models.fields import Field
 from django.utils.translation import ugettext_lazy as _
-from pagebase.fields import IntegerArrayField, AutoSlugField
+from pagebase.models.fields import IntegerArrayField, AutoSlugField
 
 
 SECTIONS = (
