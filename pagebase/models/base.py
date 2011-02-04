@@ -18,7 +18,7 @@ class HideFieldsMeta(ModelBase):
         for k, v in attrs.items():
             if isinstance(v, Field):
                 cls.base_fields[k] = attrs.pop(k)
-        return super(HideFieldsMeta, cls).__new__(cls, name, bases, attrs)
+        return ModelBase.__new__(cls, name, bases, attrs)
 
 
 class PageBaseMeta(HideFieldsMeta):
@@ -29,7 +29,7 @@ class PageBaseMeta(HideFieldsMeta):
         for k, v in cls.base_fields.items():
             if k not in attrs:
                 attrs[k] = cls.base_fields.pop(k)
-        return super(HideFieldsMeta, cls).__new__(cls, name, bases, attrs)
+        return ModelBase.__new__(cls, name, bases, attrs)
 
 
 class PageBase(models.Model):
