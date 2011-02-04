@@ -4,6 +4,7 @@ from django.db.models.base import ModelBase
 from django.db.models.fields import Field
 from django.utils.translation import ugettext_lazy as _
 from pagebase.models.fields import IntegerArrayField, AutoSlugField
+from pagebase.models.utils import register
 
 
 SECTIONS = (
@@ -30,7 +31,10 @@ class PageMeta(PageBaseMeta):
         for k, v in cls.base_fields.items():
             if k not in attrs:
                 attrs[k] = cls.base_fields.pop(k)
-        return ModelBase.__new__(cls, name, bases, attrs)
+        page_cls = ModelBase.__new__(cls, name, bases, attrs)
+        # might as well register the listeners to update tree here
+        register(page_cls)
+        return page_cls
 
 
 class PageBase(models.Model):

@@ -96,17 +96,19 @@ class AutoSlugField(SouthMixin, models.SlugField):
         kwargs.setdefault('max_length', 110)
         kwargs.setdefault('unique', True)
         kwargs.setdefault('editable', False)
+        self.update = kwargs.pop('update', True)
         self.populate_from = kwargs.pop('populate_from', 'title')
         self.slugify = kwargs.pop('slugify', slugify)
         self.invalid = kwargs.pop('invalid', [])
         super(AutoSlugField, self).__init__(*args, **kwargs)
 
     def pre_save(self, obj, add):
-        value = self.value_from_object(obj)
-        if not value:
+        if add or self.update:
             value = getattr(obj, self.populate_from)
             if callable(value):
-                return value()
+                value = value()
+        else:
+            value = self.value_from_object(obj)
         slug = self.slugify(value)
         counter = 1
         _slug = slug

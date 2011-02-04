@@ -1,5 +1,5 @@
-from django.db.models import signals
 from django.db import connection, transaction
+from django.db.models import signals
 
 
 def update_tree(instance, sender, **kwargs):
