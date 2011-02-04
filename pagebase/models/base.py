@@ -14,10 +14,10 @@ SECTIONS = (
 
 class HideFieldsMeta(ModelBase):
     def __new__(cls, name, bases, attrs):
-        cls._basepage_fields = {}
+        cls.base_fields = {}
         for k, v in attrs.items():
             if isinstance(v, Field):
-                cls._basepage_fields[k] = attrs.pop(k)
+                cls.base_fields[k] = attrs.pop(k)
         return super(HideFieldsMeta, cls).__new__(cls, name, bases, attrs)
 
 
@@ -26,9 +26,9 @@ class PageBaseMeta(HideFieldsMeta):
     This is what implementing classes need to use
     """
     def __new__(cls, name, bases, attrs):
-        for k, v in cls._basepage_fields.items():
+        for k, v in cls.base_fields.items():
             if k not in attrs:
-                attrs[k] = cls._basepage_fields.pop(k)
+                attrs[k] = cls.base_fields.pop(k)
         return super(HideFieldsMeta, cls).__new__(cls, name, bases, attrs)
 
 
