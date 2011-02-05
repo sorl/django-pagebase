@@ -10,8 +10,10 @@ setup(
     author_email='mikko@aino.se',
     license='BSD',
     url='https://github.com/aino/django-pagebase',
+    platforms='any',
     packages=find_packages(),
     include_package_data=True,
+    install_requires=['django-aislug>=0.1'],
     zip_safe=False,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

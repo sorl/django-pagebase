@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.views.main import ChangeList
-from pagebase.models.abstract import PageBase
+from pagebase.models.base import PageBase
 
 
 class PageChangeList(ChangeList):

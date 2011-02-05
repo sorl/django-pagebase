@@ -1,11 +1,11 @@
 #coding=utf-8
+from aislug import AISlugField
 from django.db import models
 from django.db.models.base import ModelBase
 from django.db.models.fields import Field
 from django.utils.translation import ugettext_lazy as _
-from pagebase.models.fields import IntegerArrayField, AutoSlugField
+from pagebase.models.fields import IntegerArrayField
 from pagebase.models.utils import register
-
 
 SECTIONS = (
     ('main', _('Main')),
@@ -42,7 +42,7 @@ class PageBase(models.Model):
     section = models.CharField(_('section'), choices=SECTIONS, max_length=10, blank=True)
     parent = models.ForeignKey('self', verbose_name=_(u'parent'), blank=True, null=True, related_name='children')
     title = models.CharField(_('title'), max_length=500)
-    slug = AutoSlugField(max_length=510, blank=True)
+    slug = AISlugField(max_length=510, blank=True)
     position = models.IntegerField(_('position'), default=0)
 
     # tree denormalizarion
