@@ -1,24 +1,18 @@
-from os.path import abspath, dirname, join as pjoin
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup, find_packages
 
-
-fn = abspath(pjoin(dirname(__file__), 'README.rst'))
-fp = open(fn, 'r')
-long_description = fp.read()
-fp.close()
 
 setup(
     name='pagebase',
-    version='0.1',
-    url='https://github.com/aino/django-pagebase',
-    license='BSD',
+    version='0.2',
+    description='Pages for Django',
+    long_description=open('README.rst').read(),
     author='Mikko Hellsing',
     author_email='mikko@aino.se',
-    description='Pages for Django',
-    long_description=long_description,
+    license='BSD',
+    url='https://github.com/aino/django-pagebase',
+    packages=find_packages(),
+    include_package_data=True,
+    zip_safe=False,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Environment :: Web Environment',
@@ -29,11 +23,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Framework :: Django',
     ],
-    packages=[
-        'pagebase',
-    ],
-    platforms='any',
-    # we don't want eggs
-    zip_safe=False,
 )
 
