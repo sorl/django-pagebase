@@ -30,7 +30,7 @@ class PageMeta(PageBaseMeta):
     def __new__(cls, name, bases, attrs):
         for k, v in cls.base_fields.items():
             if k not in attrs:
-                attrs[k] = cls.base_fields.pop(k)
+                attrs[k] = cls.base_fields[k]
         page_cls = ModelBase.__new__(cls, name, bases, attrs)
         # might as well register the listeners to update tree here
         register(page_cls)
