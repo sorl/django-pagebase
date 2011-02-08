@@ -54,7 +54,7 @@ class PageMeta(PageBaseMeta):
 class PageBasePublishedManager(models.Manager):
     """
     This is the manager used for putting a page with current url into context
-    using ``basepage.context_processors.page``
+    using ``pagebase.context_processors.page``
     """
     def contribute_to_class(self, model, name):
         super(PageBasePublishedManager, self).contribute_to_class(model, name)
