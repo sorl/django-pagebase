@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='pagebase',
-    version='0.2',
+    name='django-pagebase',
+    version='0.2.1',
     description='Pages for Django',
     long_description=open('README.rst').read(),
     author='Mikko Hellsing',

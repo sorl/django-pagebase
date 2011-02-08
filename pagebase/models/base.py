@@ -4,8 +4,9 @@ from django.db import models
 from django.db.models.base import ModelBase
 from django.db.models.fields import Field
 from django.utils.translation import ugettext_lazy as _
+from pagebase.helpers import registry
 from pagebase.models.fields import IntegerArrayField
-from pagebase.models.utils import register
+
 
 SECTIONS = (
     ('main', _('Main')),
@@ -13,7 +14,20 @@ SECTIONS = (
 )
 
 
+class EmptyPage(object):
+    def __nonzero__(self):
+        return False
+
+    def __getattr__(self, name):
+        return ''
+
+
 class PageBaseMeta(ModelBase):
+    """
+    Meta class for abstract class ``PageBaseMeta``. This class hides the model
+    fields on allocation so that you can pick them up or not in a meta class
+    that inherits this.
+    """
     base_fields = {}
 
     def __new__(cls, name, bases, attrs):
@@ -28,16 +42,29 @@ class PageMeta(PageBaseMeta):
     This is what implementing classes need to use
     """
     def __new__(cls, name, bases, attrs):
+        # inject PageBase fields
         for k, v in cls.base_fields.items():
             if k not in attrs:
                 attrs[k] = cls.base_fields[k]
         page_cls = ModelBase.__new__(cls, name, bases, attrs)
-        # might as well register the listeners to update tree here
-        register(page_cls)
+        registry.set_model(page_cls)
         return page_cls
 
 
+class PageBasePublishedManager(models.Manager):
+    """
+    This is the manager used for putting a page with current url into context
+    using ``basepage.context_processors.page``
+    """
+    def contribute_to_class(self, model, name):
+        super(PageBasePublishedManager, self).contribute_to_class(model, name)
+        registry.set_published_queryset(getattr(model, name))
+
+
 class PageBase(models.Model):
+    """
+    The base model for page.
+    """
     __metaclass__ = PageBaseMeta
     section = models.CharField(_('section'), choices=SECTIONS, max_length=10, blank=True)
     parent = models.ForeignKey('self', verbose_name=_(u'parent'), blank=True, null=True, related_name='children')
