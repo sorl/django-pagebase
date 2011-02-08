@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from django.http import Http404, HttpResponseRedirect
 
 
-class PageBaseView(TemplateView):
+class PageViewBase(TemplateView):
     __metaclass__ = ABCMeta
 
     template_name = 'pages/default.html'

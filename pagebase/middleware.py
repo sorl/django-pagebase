@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponse
 from pagebase.models.base import EmptyPage
 
 
-class PageBaseContextMiddleWare(object):
+class PageContextMiddleWareBase(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod
@@ -22,7 +22,7 @@ class PageBaseContextMiddleWare(object):
         return response
 
 
-class PageBaseFallbackMiddleware(object):
+class PageFallbackMiddlewareBase(object):
     __metaclass__ = ABCMeta
 
     @abstractmethod

@@ -9,7 +9,7 @@ class PageChangeList(ChangeList):
         return qs.order_by(*PageBase._meta.ordering)
 
 
-class PageBaseAdmin(admin.ModelAdmin):
+class PageAdminBase(admin.ModelAdmin):
     search_fields = ('title',)
     list_display = ('title', 'section', 'position', 'url')
     list_editable = ('position',)
