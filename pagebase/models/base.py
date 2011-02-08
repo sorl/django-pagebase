@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models.base import ModelBase
 from django.db.models.fields import Field
 from django.utils.translation import ugettext_lazy as _
-from pagebase.helpers import registry
+from pagebase.helpers import register
 from pagebase.models.fields import IntegerArrayField
 
 
@@ -47,18 +47,8 @@ class PageMeta(PageBaseMeta):
             if k not in attrs:
                 attrs[k] = cls.base_fields[k]
         page_cls = ModelBase.__new__(cls, name, bases, attrs)
-        registry.set_model(page_cls)
+        register(page_cls)
         return page_cls
-
-
-class PageBasePublishedManager(models.Manager):
-    """
-    This is the manager used for putting a page with current url into context
-    using ``pagebase.context_processors.page``
-    """
-    def contribute_to_class(self, model, name):
-        super(PageBasePublishedManager, self).contribute_to_class(model, name)
-        registry.set_published_queryset(getattr(model, name))
 
 
 class PageBase(models.Model):
