@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from django.http import Http404, HttpResponseRedirect
 
 
-class PageViewBase(TemplateView):
+class PageViewMixinBase(object):
     __metaclass__ = ABCMeta
 
     template_name = 'pages/default.html'
@@ -13,9 +13,6 @@ class PageViewBase(TemplateView):
     @abstractmethod
     def get_query_set(self):
         raise NotImplemented
-
-    def page_not_found(self):
-        return page_not_found
 
     def get_context_data(self, url=None):
         if not url.endswith('/') and settings.APPEND_SLASH:
@@ -27,4 +24,8 @@ class PageViewBase(TemplateView):
         except ObjectDoesNotExist:
             raise Http404
         return {'page': page}
+
+
+class PageViewBase(PageViewMixinBase, TemplateView):
+    pass
 
