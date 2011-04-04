@@ -14,7 +14,22 @@ SECTIONS = (
 )
 
 
+class PageManager(models.Manager):
+    """
+    A manager ment to use for a context processor putting a page in the
+    context, be it a real page or an empty one.
+    """
+    def get_or_empty(self, **kwargs):
+        try:
+            return self.get_query_set().get(**kwargs)
+        except self.model.DoesNotExist:
+            return EmptyPage()
+
+
 class EmptyPage(object):
+    """
+    An empty page that does not choke on accessing attributes.
+    """
     def __nonzero__(self):
         return False
 
@@ -24,7 +39,7 @@ class EmptyPage(object):
 
 class PageBaseMeta(ModelBase):
     """
-    Meta class for abstract class ``PageBaseMeta``. This class hides the model
+    Meta class for base model class ``PageBase``. This class hides the model
     fields on allocation so that you can pick them up or not in a meta class
     that inherits this.
     """

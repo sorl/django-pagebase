@@ -5,38 +5,30 @@ from django.db import models
 from django.utils.datastructures import DictWrapper
 
 
-__all__ = ('CharArrayField', 'IntegerArrayField', 'BooleanArrayField',
-           'SouthMixin')
+__all__ = ('CharArrayField', 'IntegerArrayField', 'BooleanArrayField')
 
 
-class SouthMixin(object):
+class ArrayFieldBase(models.Field):
     """
-    Just some south introspection Mixin
-    """
-    def south_field_triple(self):
-        from south.modelsinspector import introspector
-        cls_name = '%s.%s' % (self.__class__.__module__ , self.__class__.__name__)
-        args, kwargs = introspector(self)
-        return (cls_name, args, kwargs)
-
-
-class NoSerializeField(SouthMixin, models.Field):
-    """
-    A base field for field types that cannot be serialized
+    A base class for PostgreSQL array fields.
     """
     def __init__(self, *args, **kwargs):
-        kwargs['serialize'] = False
-        super(NoSerializeField, self).__init__(*args, **kwargs)
+        kwargs['serialize'] = False # TODO, figure this out
+        super(ArrayFieldBase, self).__init__(*args, **kwargs)
 
+    def south_field_triple(self):
+        from south.modelsinspector import introspector
+        name = '%s.%s' % (self.__class__.__module__ , self.__class__.__name__)
+        args, kwargs = introspector(self)
+        return name, args, kwargs
 
-class BaseArrayField(NoSerializeField):
     def get_prep_value(self, value):
         if value == '':
             value = '{}'
         return value
 
 
-class CharArrayField(BaseArrayField):
+class CharArrayField(ArrayFieldBase):
     """
     A character varying array field for PostgreSQL
     """
@@ -49,7 +41,7 @@ class CharArrayField(BaseArrayField):
         return 'character varying(%(max_length)s)[]' % data
 
 
-class IntegerArrayField(BaseArrayField):
+class IntegerArrayField(ArrayFieldBase):
     """
     An integer array field for PostgreSQL
     """
@@ -57,7 +49,7 @@ class IntegerArrayField(BaseArrayField):
         return 'integer[]'
 
 
-class BooleanArrayField(BaseArrayField):
+class BooleanArrayField(ArrayFieldBase):
     """
     A boolean array field for PostgreSQL
     """
