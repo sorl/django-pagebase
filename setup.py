@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-pagebase',
-    version='0.4',
+    version='0.4.1',
     description='Pages for Django',
     long_description=open('README.rst').read(),
     author='Mikko Hellsing',
